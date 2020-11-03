@@ -1,9 +1,12 @@
 
 #include "includes.h"
+#define IP(a,b,c,d) (uint32_t)(a | (b << 8) | (c << 16) | (d << 24))
 
 WiFiUDP Udp;
 WiFiClient espClient;
 PubSubClient client(espClient);
+uint32_t apIP = IP(192,168,4,1);
+IPAddress subnet(255,255,0,0);
 
 const char* router_ssid = LOCAL_ROUTER_SSID;
 const char* password = LOCAL_ROUTER_PASSWORD;
@@ -25,7 +28,7 @@ void reconnect(void) {
 #if DEBUG
       Serial.println("connected");
 #endif
-
+      digitalWrite(LED_BUILTIN, LOW);
     } 
     else {
 
@@ -34,6 +37,7 @@ void reconnect(void) {
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
 #endif
+      digitalWrite(LED_BUILTIN, HIGH);
 
       delay(5000);
     }
@@ -70,6 +74,8 @@ void setup()
   client.setServer(mqtt_server, 1883);
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(LOCAL_ROUTER_SSID, LOCAL_ROUTER_PASSWORD);
+  WiFi.softAPConfig(IPAddress(apIP), IPAddress(apIP), subnet);
+
   WiFi.softAP(AP_SSID, AP_PASS);
   
 #if DEBUG
