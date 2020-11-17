@@ -1,99 +1,12 @@
 
 #include "includes.h"
-#define IP(a,b,c,d) (uint32_t)(a | (b << 8) | (c << 16) | (d << 24))
-
-WiFiUDP Udp;
-WiFiClient espClient;
-PubSubClient client(espClient);
-uint32_t apIP = IP(192,168,4,1);
-IPAddress subnet(255,255,0,0);
-
-const char* router_ssid = LOCAL_ROUTER_SSID;
-const char* password = LOCAL_ROUTER_PASSWORD;
-const char* mqtt_server = MQTT_SERVER;
-
-// buffers for receiving and sending data
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE + 1]; //buffer to hold incoming packet,
-char  ReplyBuffer[] = "100\r\n";       // a string to send back
  
-void reconnect(void) {
-  while (!client.connected()) {
-
-#if DEBUG
-    Serial.print("Attempting MQTT connection...");
-#endif
-
-    if (client.connect("ESP8266 Client")) {
-
-#if DEBUG
-      Serial.println("connected");
-#endif
-      digitalWrite(LED_BUILTIN, LOW);
-    } 
-    else {
-
-#if DEBUG
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-#endif
-      digitalWrite(LED_BUILTIN, HIGH);
-
-      delay(5000);
-    }
-  }
-}
-void wait_for_packet(void)
-{
-  int packetSize = Udp.parsePacket();
-
-  if (packetSize) {
-
-#if DEBUG
-    Serial.printf("Received packet of size %d from %s:%d\n    (to %s:%d, free heap = %d B)\n",
-                  packetSize,
-                  Udp.remoteIP().toString().c_str(), Udp.remotePort(),
-                  Udp.destinationIP().toString().c_str(), Udp.localPort(),
-                  ESP.getFreeHeap());
-#endif
-
-    int n = Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
-    packetBuffer[n] = '\0';
-
-#if DEBUG
-    Serial.println("Contents:");
-    Serial.println(packetBuffer);
-#endif
-
-    client.publish(MQTT_PUB_TOPIC_ADC,packetBuffer);
-  }
-}
 void setup()
 {
-  Serial.begin(9600);
-  client.setServer(mqtt_server, 1883);
-  WiFi.mode(WIFI_AP_STA);
-  WiFi.begin(LOCAL_ROUTER_SSID, LOCAL_ROUTER_PASSWORD);
-  WiFi.softAPConfig(IPAddress(apIP), IPAddress(apIP), subnet);
-
-  WiFi.softAP(AP_SSID, AP_PASS);
-  
-#if DEBUG
-  Serial.print("AP IP address: ");
-  Serial.print(WiFi.softAPIP());
-  Serial.println();
-#endif
-
-  Udp.begin(BROADCAST_PORT);
-  pinMode(LED_BUILTIN, OUTPUT);
-  
+  setup_base(); 
 }
  
 void loop()
 {
- if (!client.connected()) {
-  reconnect();
- }
- wait_for_packet();
- client.loop();
+  loop_function();
 }
