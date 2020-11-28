@@ -38,55 +38,55 @@
 #define AP_PASS                     "teorijazavere"
 
 /**WiFi channel.*/
-#define WIFI_CHANNEL              1
+#define WIFI_CHANNEL                1
 
 /** Maximum possible number of connected devices to base station.*/
-#define MAX_CONNECTED             7
+#define MAX_CONNECTED               7
 
 /** Port which base station will listen for CH`s or nodes.*/
 #define BROADCAST_PORT              2000
 
 /** Node 0 AP name.*/
-#define NODE_0                    "Node 0"
+#define NODE_0                      "Node 0"
 
 /** Node 1 AP name.*/
-#define NODE_1                    "Node 1"
+#define NODE_1                      "Node 1"
 
 /** Node 2 AP name.*/
-#define NODE_2                    "Node 2"
+#define NODE_2                      "Node 2"
 
 /** Node 3 AP name.*/
-#define NODE_3                    "Node 3"
+#define NODE_3                      "Node 3"
 
 /** Node 4 AP name.*/
-#define NODE_4                    "Node 4"
+#define NODE_4                      "Node 4"
 
 /** Node 5 AP name.*/
-#define NODE_5                    "Node 5"
+#define NODE_5                      "Node 5"
 
 /** Node 6 AP name.*/
-#define NODE_6                    "Node 6"
+#define NODE_6                      "Node 6"
 
 /** MAC address of node which name will be Node 0.*/
-#define MAC_NODE_0                "A4:CF:12:C3:04:FD"
+#define MAC_NODE_0                  "A4:CF:12:C3:04:FD"
 
 /** MAC address of node which name will be Node 1*/
-#define MAC_NODE_1                "FC:F5:C4:AC:36:86"
+#define MAC_NODE_1                  "FC:F5:C4:AC:36:86"
 
 /** MAC address of node which name will be Node 2.*/
-#define MAC_NODE_2                "C8:2B:96:29:F1:03"
+#define MAC_NODE_2                  "C8:2B:96:29:F1:03"
 
 /** MAC address of node which name will be Node 3.*/
-#define MAC_NODE_3                "A4:CF:12:C3:0A:9B"
+#define MAC_NODE_3                  "A4:CF:12:C3:0A:9B"
 
 /** MAC address of node which name will be Node 4.*/
-#define MAC_NODE_4                "C8:2B:96:29:FB:9E"
+#define MAC_NODE_4                  "C8:2B:96:29:FB:9E"
 
 /** MAC address of node which name will be Node 5.*/
-#define MAC_NODE_5                "A4:CF:12:C3:0F:77"
+#define MAC_NODE_5                  "A4:CF:12:C3:0F:77"
 
 /** MAC address of node which name will be Node 6.*/
-#define MAC_NODE_6                "A4:CF:12:C3:08:1C"
+#define MAC_NODE_6                  "A4:CF:12:C3:08:1C"
 
 /**
  * @brief This function will find number of nodes in string.

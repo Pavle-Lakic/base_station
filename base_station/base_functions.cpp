@@ -32,9 +32,7 @@ const char* router_ssid = LOCAL_ROUTER_SSID;
 const char* password = LOCAL_ROUTER_PASSWORD;
 const char* mqtt_server = MQTT_SERVER;
 
-// buffers for receiving and sending data
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE + 1]; //buffer to hold incoming packet,
-char  ReplyBuffer[] = "100\r\n";
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE + 1];
 
 unsigned char nodes_number(char *txt)
 {
@@ -212,9 +210,9 @@ void wait_for_packet(void)
     Serial.println(packetBuffer);
 #endif
 
-unsigned char number_of_nodes = nodes_number(packetBuffer);
+    unsigned char number_of_nodes = nodes_number(packetBuffer);
 
-publish_node(packetBuffer, number_of_nodes);
-    //client.publish(MQTT_PUB_TOPIC_ADC,packetBuffer);
+    publish_node(packetBuffer, number_of_nodes);
+
   }
 }
