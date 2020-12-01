@@ -34,6 +34,8 @@ const char* mqtt_server = MQTT_SERVER;
 
 char packetBuffer[UDP_TX_PACKET_MAX_SIZE + 1];
 
+String clientId = "BaseStation-";
+
 unsigned char nodes_number(char *txt)
 {
     unsigned char ret = 0;
@@ -148,6 +150,7 @@ void setup_base(void)
 
   Udp.begin(BROADCAST_PORT);
   pinMode(LED_BUILTIN, OUTPUT);
+  //digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void reconnect(void) 
@@ -158,33 +161,41 @@ void reconnect(void)
     Serial.print("Attempting MQTT connection...");
 #endif
 
-    if (client.connect("ESP8266 Client")) {
+    clientId += String(random(0xffff), HEX);
+
+    if (client.connect(clientId.c_str())) {
+
+      digitalWrite(LED_BUILTIN, LOW);
 
 #if DEBUG
       Serial.println("connected");
 #endif
-
+ 
     } 
     else {
+
+      digitalWrite(LED_BUILTIN, HIGH);
 
 #if DEBUG
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
 #endif
-      digitalWrite(LED_BUILTIN, HIGH);
 
       delay(5000);
     }
   }
 }
 
+
 void loop_function(void)
 {
   if (!client.connected()) {
     reconnect();
   }
-  wait_for_packet();
+  else {
+    wait_for_packet();
+  }
   client.loop();
 }
    
@@ -210,9 +221,9 @@ void wait_for_packet(void)
     Serial.println(packetBuffer);
 #endif
 
-    unsigned char number_of_nodes = nodes_number(packetBuffer);
+  unsigned char number_of_nodes = nodes_number(packetBuffer);
 
-    publish_node(packetBuffer, number_of_nodes);
+  publish_node(packetBuffer, number_of_nodes);
 
   }
 }
